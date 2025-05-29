@@ -13,7 +13,7 @@ import L from "leaflet";
 export default function Login({setShowLogin, myStorage, setCurrentUser}) {
   
  
-  const BASE_URL = "http://localhost:8000";
+ const BASE_URL = "https://travelbuddy-backend-dbve.onrender.com";
 
   const [error,setError] = useState(false);
   const nameRef = useRef(); 

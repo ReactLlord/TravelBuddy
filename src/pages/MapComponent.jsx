@@ -158,7 +158,7 @@ function MapComponent() {
     };
 
     try {
-      const res = await axios.post("http://localhost:8000/api/pins", newPin);
+      const res = await axios.post(`${BASE_URL}/api/pins`, newPin);
       setPins([...pins, res.data]);
       setNewPlace(null); // Clear the new place after submission
     } catch (error) {

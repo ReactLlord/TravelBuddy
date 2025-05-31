@@ -16,6 +16,9 @@ const Chatbot = () => {
     "What to pack for Thailand?",
   ];
 
+  const BASE_URL = "https://travelbuddy-backend-dbve.onrender.com";
+
+
   const sendMessage = async (text) => {
     const userMessage = { role: "user", content: text || input };
     const updatedMessages = [
@@ -32,7 +35,7 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/chat", {
+      const res = await axios.post(`${BASE_URL}/api/chat`, {
         messages: updatedMessages, location:userLocation
       });
 

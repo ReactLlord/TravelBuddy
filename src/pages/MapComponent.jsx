@@ -16,7 +16,7 @@ import Star from "@mui/icons-material/Star";
 
 //map centering
 import { useMap } from "react-leaflet";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 //timeago
 import { format } from "timeago.js";
@@ -24,6 +24,8 @@ import { format } from "timeago.js";
 import { useMapEvent } from "react-leaflet";
 import Register from "../components/Register";
 import Login from "../components/login";
+import Chatbot from "../components/Chatbot";
+import { TravelContext } from "../context/TravelContext";
 
 // MapViewSetter component to set the map view
 function MapViewSetter({ coords }) {
@@ -44,11 +46,13 @@ L.Icon.Default.mergeOptions({
 
 function MapComponent() {
 
+  const {currentUser, setCurrentUser,showChat,setShowChat , userLocation, setUserLocation} = useContext(TravelContext)
+
+
   const BASE_URL = "https://travelbuddy-backend-dbve.onrender.com";
 
   const myStorage = window.localStorage;
-  const [currentUser, setCurrentUser] = useState(myStorage.getItem("user")); // Get current user from local storage
- const [userLocation, setUserLocation] = useState(null);
+  //const [currentUser, setCurrentUser] = useState(myStorage.getItem("user")); // Get current user from local storage
 
   const [pins, setPins] = useState([]); // State to hold pins data
   const [currentPlaceId, setCurrentPlaceId] = useState(null); // State to hold the current place ID
@@ -62,17 +66,12 @@ function MapComponent() {
 
 
 
-  //Set user Location
-  //  useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       setUserLocation([position.coords.latitude, position.coords.longitude]);
-  //     },
-  //     (error) => {
-  //       console.error("Location error:", error);
-  //     }
-  //   );
-  // }, []);
+  useEffect(()=>{
+    setCurrentUser(myStorage.getItem("user"))
+  },[])
+
+
+ 
 
   //custom icon for the marker
   // Slate Blue Icon
@@ -110,8 +109,7 @@ function MapComponent() {
         const res = await axios.get(`${BASE_URL}/api/pins`);
         console.log("response from backend:", res);
        // console.log("pins:", res.data);
-        setPins(res.data);
-        setPins(res.data);
+        setPins(res.data); 
        // console.log(pins);
       } catch (error) {
         console.log(error);
@@ -138,6 +136,7 @@ function MapComponent() {
       long: lng,
       username: currentUser,
     });
+    setShowChat(false)
     console.log(newPlace);
   };
 
@@ -175,17 +174,36 @@ function MapComponent() {
     setNewPlace(null); // Clear new place on logout
   }
 
+
+   //Set user Location
+//    useEffect(() => {
+//   navigator.geolocation.getCurrentPosition(
+//     (position) => {
+//       const coords = [position.coords.latitude, position.coords.longitude];
+//       setUserLocation(coords);
+//       console.log("User location set:", coords);
+//     },
+//     (error) => {
+//       console.error("Location error:", error);
+//     }
+//   );
+// }, []);
+
+
   return (
-    <div style={{ position: "relative",  height: "100vh" }} className="">
+    <div style={{ position: "relative",  height: "100%" }} className=""   onClick={()=>setShowChat(false)}>
       <MapContainer
         center={userLocation || [48.8584, 2.2945]} // Center on Eiffel Tower
         zoom={3}
         zoomControl={false}
         style={{ height: "100%", width: "100%" }}
+       
+    
       >
         <MapDoubleClickHandler
           onDoubleClick={handleAddCick}
           transitionDuration="200"
+             
         />
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -290,9 +308,16 @@ function MapComponent() {
         )}
         </div>
 
+      
         <ZoomControl position="bottomleft" />
         <MapViewSetter coords={mapCenter} />
+
+        
+          
+
       </MapContainer>
+    
+    
     </div>
   );
 }

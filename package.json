@@ -45,5 +45,8 @@
       "last 1 safari version"
     ]
   },
-"proxy": "https://travelbuddy-backend-dbve.onrender.com"
+  "proxy": "https://travelbuddy-backend-dbve.onrender.com",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
 }

@@ -28,4 +28,23 @@
    
 }
 
+.transparent-icon {
+  background: transparent;
+  border: none;
+}
+
+
+/* tooltip: distance poup animation  */
+.fade-in-tooltip {
+  opacity: 0;
+  animation: fadein 10s ease forwards;
+}
+
+@keyframes fadein {
+  to {
+    opacity: 1;
+  }
+}
+
+
  

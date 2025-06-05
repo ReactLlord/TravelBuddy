@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import axios from "axios";
-import { TravelContext } from "../context/TravelContext";
-
+import { TravelContext } from "../../context/TravelContext"
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -17,6 +16,7 @@ const Chatbot = () => {
   ];
 
   const BASE_URL = "https://travelbuddy-backend-dbve.onrender.com";
+  const LOCAL_URL = "http://localhost:8000";
 
 
   const sendMessage = async (text) => {
@@ -47,8 +47,8 @@ const Chatbot = () => {
 
   return ( 
 <>
-    {showChat && currentUser &&
-    <div className="chatbot-container w-full max-w-md mx-auto p-4 bg-white rounded shadow-lg flex flex-col gap-2">
+    {showChat   &&
+    <div className="chatbot-container w-[90%] md:w-full max-w-md mx-auto p-4 bg-white rounded-xl shadow-lg flex flex-col gap-2">
       {/* Default Prompts */}
       <div className="flex flex-wrap gap-2 mb-2">
         {defaultPrompts.map((prompt, idx) => (

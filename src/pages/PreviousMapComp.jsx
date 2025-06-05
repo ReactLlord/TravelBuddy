@@ -62,8 +62,6 @@ function MapComponent() {
     setShowChat,
     userLocation,
     setUserLocation,
-    IsSignUp,
-    setIsSignUp
   } = useContext(TravelContext);
 
   const BASE_URL = "https://travelbuddy-backend-dbve.onrender.com";
@@ -190,7 +188,6 @@ function MapComponent() {
   const { setIsAuthenticated} = useContext(TravelContext);
   const navigate = useNavigate();
 
-
  
 
   const handleLogout = async (e) => {
@@ -209,21 +206,8 @@ function MapComponent() {
       }
 
        setIsAuthenticated(false);
-    navigate("/");
+    navigate("/login");
   }
-
-   const expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 hours
-localStorage.setItem("sessionExpiry", expiryTime);
-
-  useEffect(() => {
-  const expiry = localStorage.getItem("sessionExpiry");
-  const now = new Date().getTime();
-
-  if (expiry && now > parseInt(expiry)) {
-    setIsAuthenticated(false);
-    localStorage.removeItem("sessionExpiry");
-  }
-}, []);
 
   //Set user Location
   //    useEffect(() => {
@@ -306,7 +290,7 @@ localStorage.setItem("sessionExpiry", expiryTime);
             </Marker>
           ) : null
         )}
-        {newPlace && (
+        {newPlace && currentUser && (
           <Marker position={[newPlace.lat, newPlace.long]} icon={redIcon}>
             <Popup onClose={() => setNewPlace(null)}>
               <div className="form">
@@ -341,7 +325,7 @@ localStorage.setItem("sessionExpiry", expiryTime);
           </Marker>
         )}
 
-        {newPlace && userLocation && (
+        {newPlace && currentUser && userLocation && (
           <>
             <Polyline
               positions={[userLocation, [newPlace.lat, newPlace.long]]}
@@ -375,11 +359,32 @@ localStorage.setItem("sessionExpiry", expiryTime);
             zIndex: 1000,
           }}
         >
-        
+          {currentUser ? (
             <button className="button logout" onClick={handleLogout}>
               Log out
             </button>
-          
+          ) : (
+            <div className="buttons">
+              <button
+                className="button login zIndex: 1000"
+                onClick={() => {
+                  setShowLogin(true);
+                  setShowRegister(false);
+                }}
+              >
+                Login
+              </button>
+              <button
+                className="button register zIndex: 1000"
+                onClick={() => {
+                  setShowRegister(true);
+                  setShowLogin(false);
+                }}
+              >
+                Register
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="navbar">

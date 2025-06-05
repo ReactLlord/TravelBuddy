@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { TravelContext } from '../context/TravelContext'
+import { TravelContext } from '../../context/TravelContext'
 
 export default function ChatbotImg() {
 
